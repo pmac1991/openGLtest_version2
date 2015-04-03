@@ -106,8 +106,10 @@ void DrawTriangle(GLfloat x, GLfloat y, GLfloat z, //positions: x,y,x
 		glPushMatrix();
 			glColor3f(R, G, B);
 			glTranslatef(x, y, z);
+			glTranslatef(0.33, 0.33, z);
 			glRotatef((rotDir*rotatex) / rotVal, 1.0, 0, 0);
 			glRotatef((rotDir*rotatey) / rotVal, 0, 1.0, 0);
+			glTranslatef(-0.33, -0.33, z);
 			glBegin(GL_TRIANGLES);
 				glVertex3f(0.0f, lenght, 0.0f);
 				glVertex3f(lenght, 0.0f, 0.0f);
@@ -119,8 +121,10 @@ void DrawTriangle(GLfloat x, GLfloat y, GLfloat z, //positions: x,y,x
 		glPushMatrix();
 			glColor3f(R, G, B);
 			glTranslatef(x, y, z);
+			glTranslatef(0.33, 0.33, z);
 			glRotatef((rotDir*rotatex) / rotVal, 1.0, 0, 0);
 			glRotatef((rotDir*rotatey) / rotVal, 0, 1.0, 0);
+			glTranslatef(-0.33, -0.33, z);
 			glBegin(GL_TRIANGLES);
 				glVertex3f(0.0f, lenght, 0.0f);
 				glVertex3f(-lenght, 0.0f, 0.0f);
@@ -132,8 +136,10 @@ void DrawTriangle(GLfloat x, GLfloat y, GLfloat z, //positions: x,y,x
 		glPushMatrix();
 			glColor3f(R, G, B);
 			glTranslatef(x, y, z);
+			glTranslatef(0.33, 0.33, z);
 			glRotatef((rotDir*rotatex) / rotVal, 1.0, 0, 0);
 			glRotatef((rotDir*rotatey) / rotVal, 0, 1.0, 0);
+			glTranslatef(-0.33, -0.33, z);
 				glBegin(GL_TRIANGLES);
 				glVertex3f(0.0f, -lenght, 0.0f);
 				glVertex3f(-lenght, 0.0f, 0.0f);
@@ -144,9 +150,11 @@ void DrawTriangle(GLfloat x, GLfloat y, GLfloat z, //positions: x,y,x
 	case 4:
 		glPushMatrix();
 			glColor3f(R, G, B);
-			glTranslatef(x, y, z);
-			glRotatef(rotatex, 1.0, 0, 0);
-			glRotatef(rotatey, 0, 1.0, 0);
+			glTranslatef(x , y, z);
+			glTranslatef(0.33, 0.33, z);
+			glRotatef((rotDir*rotatex) / rotVal, 1.0, 0, 0);
+			glRotatef((rotDir*rotatey) / rotVal, 0, 1.0, 0);
+			glTranslatef(-0.33, -0.33, z);
 			glBegin(GL_TRIANGLES);
 				glVertex3f(0.0f, -lenght, 0.0f);
 				glVertex3f(lenght, 0.0f, 0.0f);
@@ -159,42 +167,15 @@ void DrawTriangle(GLfloat x, GLfloat y, GLfloat z, //positions: x,y,x
 	}
 }
 
-// funkcja generuj¹ca scenê 3D
-void Display()
+void firstExcercise()
 {
-	// kolor t³a - zawartoœæ bufora koloru
-	glClearColor(1.0, 1.0, 1.0, 1.0);
-
-	// czyszczenie bufora koloru
-	glClear(GL_COLOR_BUFFER_BIT);
-
-	// wybór macierzy modelowania
-	glMatrixMode(GL_MODELVIEW);
-
-	// macierz modelowania = macierz jednostkowa
-	glLoadIdentity();
-
-	// ustawienie obserwatora
-	gluLookAt(eyex, eyey, eyez, centerx, centery, centerz, 0, 1, 0);
-
-	// kolor krawêdzi szeœcianu
-	glColor3f(0.0, 0.0, 0.0);
-
-	// obroty obiektu - klawisze kursora
-	//glRotatef(rotatex, 1.0, 0, 0);
-	//glRotatef(rotatey, 0, 1.0, 0);
-	
-//	glutWireTeapot(1.0);
-
-	GLfloat j = 0.0;
-	
 	//central four triangles
 	for (int i = 1; i <= 4; i++)
 	{
 		DrawTriangle(0, 0, 0, 0, 1, 0, 1.0f, 1.0, 1.0, i);
 	}
 
-	//first row of triangles
+	////first row of triangles
 	for (int i = -4; i <= 4; i++)
 	{
 		for (int k = -4; k <= 4; k++)
@@ -204,7 +185,7 @@ void Display()
 				if (i == 0 && k == 1)
 				{
 					DrawTriangle(i + spread, k + spread, 0, 1, 0, 0, 1.0f, -1.0, 3.0, 1);
-				}	
+				}
 				if (i == 1 && k == 0)
 				{
 					DrawTriangle(i + spread, k + spread, 0, 0, 0, 1, 1.0f, -1.0, 3.0, 1);
@@ -245,7 +226,38 @@ void Display()
 			}
 		}
 	}
+}
 
+// funkcja generuj¹ca scenê 3D
+void Display()
+{
+	// kolor t³a - zawartoœæ bufora koloru
+	glClearColor(1.0, 1.0, 1.0, 1.0);
+
+	// czyszczenie bufora koloru
+	glClear(GL_COLOR_BUFFER_BIT);
+
+	// wybór macierzy modelowania
+	glMatrixMode(GL_MODELVIEW);
+
+	// macierz modelowania = macierz jednostkowa
+	glLoadIdentity();
+
+	// ustawienie obserwatora
+	gluLookAt(eyex, eyey, eyez, centerx, centery, centerz, 0, 1, 0);
+
+	// kolor krawêdzi szeœcianu
+	glColor3f(0.0, 0.0, 0.0);
+
+	// obroty obiektu - klawisze kursora
+	//glRotatef(rotatex, 1.0, 0, 0);
+	//glRotatef(rotatey, 0, 1.0, 0);
+	
+//	glutWireTeapot(1.0);
+
+	GLfloat j = 0.0;
+	
+	firstExcercise();
 
 	// skierowanie poleceñ do wykonania
 	glFlush();
