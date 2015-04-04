@@ -9,6 +9,9 @@
 
 #include "Shader_Loader.h";
 
+#define PI	3.14
+#define SPRING_STEP	0.1
+
 using namespace Core;
 
 enum
@@ -41,6 +44,36 @@ GLfloat spreadx = 0.0;
 GLfloat spready = 0.0;
 
 GLfloat spread = 0.0;
+
+GLfloat xAxisSpringEquation(GLfloat t,GLfloat u)
+{
+	return(cos(t) * (3 + cos(u)));
+}
+
+GLfloat yAxisSpringEquation(GLfloat t, GLfloat u)
+{
+	return(sin(t) * (3 + cos(u)));
+}
+
+GLfloat zAxisSpringEquation(GLfloat t, GLfloat u)
+{
+	return(0.6*t + sin(u));
+}
+
+void DrawSpring(GLfloat x, GLfloat y, GLfloat z //positions: x,y,x
+				)
+{
+	glPushMatrix();
+	glBegin(GL_LINES);
+	for (GLfloat t = 0.0; t < (8 * PI); t = t + SPRING_STEP)
+	{
+		for (GLfloat u = 0.0; u < (2 * PI); u = u + SPRING_STEP)
+		{
+			glVertex3f(xAxisSpringEquation(t, u), yAxisSpringEquation(t, u), zAxisSpringEquation(t, u));
+		}
+	}
+	glPopMatrix();
+}
 
 void DrawSky()
 {
@@ -257,7 +290,9 @@ void Display()
 
 	GLfloat j = 0.0;
 	
-	firstExcercise();
+	//firstExcercise();
+
+	DrawSpring(0.0, 0.0, 0.0);
 
 	// skierowanie poleceñ do wykonania
 	glFlush();
