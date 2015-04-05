@@ -60,18 +60,24 @@ GLfloat zAxisSpringEquation(GLfloat t, GLfloat u)
 	return(0.6*t + sin(u));
 }
 
-void DrawSpring(GLfloat x, GLfloat y, GLfloat z //positions: x,y,x
+void DrawSpring(GLfloat x, GLfloat y, GLfloat z, //positions: x,y,x
+				GLfloat R, GLfloat G, GLfloat B, //colour: R,G,B
+				GLfloat rotDir, GLfloat rotVal  //rotate direction (-1,1), rotate value
 				)
 {
 	glPushMatrix();
-	glBegin(GL_LINES);
-	for (GLfloat t = 0.0; t < (8 * PI); t = t + SPRING_STEP)
-	{
-		for (GLfloat u = 0.0; u < (2 * PI); u = u + SPRING_STEP)
-		{
-			glVertex3f(xAxisSpringEquation(t, u), yAxisSpringEquation(t, u), zAxisSpringEquation(t, u));
-		}
-	}
+		glColor3f(R, G, B);
+		glTranslatef(x, y, z);
+			glRotatef((rotDir*rotatex) / rotVal, 1.0, 0, 0);
+			glRotatef((rotDir*rotatey) / rotVal, 0, 1.0, 0);
+			glBegin(GL_LINES);
+			for (GLfloat t = 0.0; t < (8 * PI); t = t + SPRING_STEP)
+			{
+				for (GLfloat u = 0.0; u < (2 * PI); u = u + SPRING_STEP)
+				{
+					glVertex3f(xAxisSpringEquation(t, u), yAxisSpringEquation(t, u), zAxisSpringEquation(t, u));
+				}
+			}
 	glPopMatrix();
 }
 
@@ -292,7 +298,7 @@ void Display()
 	
 	//firstExcercise();
 
-	DrawSpring(0.0, 0.0, 0.0);
+	DrawSpring(0.0, 1.0, 1.0,1.0,0.0,0.0,1,1);
 
 	// skierowanie poleceñ do wykonania
 	glFlush();
