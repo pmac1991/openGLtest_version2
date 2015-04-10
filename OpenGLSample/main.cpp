@@ -9,7 +9,7 @@
 
 #include "Shader_Loader.h";
 
-#define PI	3.14
+#define PI	3.14f
 #define SPRING_STEP	0.1
 #define ROTATE_STYLE 2
 
@@ -333,13 +333,14 @@ void Display()
 	//glRotatef(rotatex, 1.0, 0, 0);
 	//glRotatef(rotatey, 0, 1.0, 0);
 	
-	//glutWireTeapot(1.0);
-
-	GLfloat j = 0.0;
+	///glutWireTeapot(1.0);
 	
-	firstExcercise(0,0,0,1,1,0,0,1);
+	//firstExcercise(0,0,0,1,1,0,0,1);
 
-	//DrawSpring(0.5, 0.5, 1.0,1.0,0.0,0.0,1,1);
+	//glRotatef(30, 1.0, 0, 0);
+	//glRotatef(90, 0, 1.0, 0);
+
+	DrawSpring(0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1, 1);
 
 	// skierowanie poleceñ do wykonania
 	glFlush();
