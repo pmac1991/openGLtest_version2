@@ -11,6 +11,7 @@
 
 #define PI	3.14
 #define SPRING_STEP	0.1
+#define ROTATE_STYLE 2
 
 using namespace Core;
 
@@ -133,11 +134,13 @@ void DrawSky()
 }
 
 //funkcja rysuj¹ca trójk¹t w punkcie o przesunêciu
-void DrawTriangle(GLfloat x, GLfloat y, GLfloat z, //positions: x,y,x
-				  GLfloat R, GLfloat G, GLfloat B, //colour: R,G,B
-				  GLfloat lenght,                  //lenght of triangle legs
-				  GLfloat rotDir, GLfloat rotVal,  //rotate direction (-1,1), rotate value
-				  int TriangleOrientation)         //orientation of triangle in coordinate system, number is equal to a quadrant in wich triangle is wrriten assuming that right-angle is in begining of cs
+void DrawTriangle(GLfloat x, GLfloat y, GLfloat z,			//positions: x,y,x
+				  GLfloat R, GLfloat G, GLfloat B,			//colour: R,G,B
+				  GLfloat rotX, GLfloat roty, GLfloat rotz, //center of rotation position x,y,z
+				  GLfloat lenght,							//lenght of triangle legs
+				  GLfloat rotDir, GLfloat rotVal,			//rotate direction (-1,1), rotate value
+				  int rotateOrientation,					//rotate style: 1 - 3D, 2 - 2D
+				  int TriangleOrientation)					//orientation of triangle in coordinate system, number is equal to a quadrant in wich triangle is wrriten assuming that right-angle is in begining of cs
 {
 	switch (TriangleOrientation)
 	{
@@ -145,10 +148,17 @@ void DrawTriangle(GLfloat x, GLfloat y, GLfloat z, //positions: x,y,x
 		glPushMatrix();
 			glColor3f(R, G, B);
 			glTranslatef(x, y, z);
-			glTranslatef(0.33, 0.33, z);
-			glRotatef((rotDir*rotatex) / rotVal, 1.0, 0, 0);
-			glRotatef((rotDir*rotatey) / rotVal, 0, 1.0, 0);
-			glTranslatef(-0.33, -0.33, z);
+			glTranslatef(rotX, roty, rotz);
+			if (rotateOrientation == 1)
+			{
+				glRotatef((rotDir*rotatex) / rotVal, 1.0, 0, 0);
+				glRotatef((rotDir*rotatey) / rotVal, 0, 1.0, 0);
+			};
+			if (rotateOrientation == 2)
+			{
+				glRotatef((rotDir*rotatex) / rotVal, 0.0, 0.0, 1.0);
+			};
+			glTranslatef(-rotX, -roty, -rotz);
 			glBegin(GL_TRIANGLES);
 				glVertex3f(0.0f, lenght, 0.0f);
 				glVertex3f(lenght, 0.0f, 0.0f);
@@ -160,10 +170,17 @@ void DrawTriangle(GLfloat x, GLfloat y, GLfloat z, //positions: x,y,x
 		glPushMatrix();
 			glColor3f(R, G, B);
 			glTranslatef(x, y, z);
-			glTranslatef(0.33, 0.33, z);
-			glRotatef((rotDir*rotatex) / rotVal, 1.0, 0, 0);
-			glRotatef((rotDir*rotatey) / rotVal, 0, 1.0, 0);
-			glTranslatef(-0.33, -0.33, z);
+			glTranslatef(rotX, roty, rotz);
+			if (rotateOrientation == 1)
+			{
+				glRotatef((rotDir*rotatex) / rotVal, 1.0, 0, 0);
+				glRotatef((rotDir*rotatey) / rotVal, 0, 1.0, 0);
+			};
+			if (rotateOrientation == 2)
+			{
+				glRotatef((rotDir*rotatex) / rotVal, 0.0, 0.0, 1.0);
+			};
+			glTranslatef(-rotX, -roty, -rotz);
 			glBegin(GL_TRIANGLES);
 				glVertex3f(0.0f, lenght, 0.0f);
 				glVertex3f(-lenght, 0.0f, 0.0f);
@@ -175,10 +192,17 @@ void DrawTriangle(GLfloat x, GLfloat y, GLfloat z, //positions: x,y,x
 		glPushMatrix();
 			glColor3f(R, G, B);
 			glTranslatef(x, y, z);
-			glTranslatef(0.33, 0.33, z);
-			glRotatef((rotDir*rotatex) / rotVal, 1.0, 0, 0);
-			glRotatef((rotDir*rotatey) / rotVal, 0, 1.0, 0);
-			glTranslatef(-0.33, -0.33, z);
+			glTranslatef(rotX, roty, rotz);
+			if (rotateOrientation == 1)
+			{
+				glRotatef((rotDir*rotatex) / rotVal, 1.0, 0, 0);
+				glRotatef((rotDir*rotatey) / rotVal, 0, 1.0, 0);
+			};
+			if (rotateOrientation == 2)
+			{
+				glRotatef((rotDir*rotatex) / rotVal, 0.0, 0.0, 1.0);
+			};
+			glTranslatef(-rotX, -roty, -rotz);
 				glBegin(GL_TRIANGLES);
 				glVertex3f(0.0f, -lenght, 0.0f);
 				glVertex3f(-lenght, 0.0f, 0.0f);
@@ -190,10 +214,17 @@ void DrawTriangle(GLfloat x, GLfloat y, GLfloat z, //positions: x,y,x
 		glPushMatrix();
 			glColor3f(R, G, B);
 			glTranslatef(x , y, z);
-			glTranslatef(0.33, 0.33, z);
-			glRotatef((rotDir*rotatex) / rotVal, 1.0, 0, 0);
-			glRotatef((rotDir*rotatey) / rotVal, 0, 1.0, 0);
-			glTranslatef(-0.33, -0.33, z);
+			glTranslatef(rotX, roty, rotz);
+			if (rotateOrientation == 1)
+			{
+				glRotatef((rotDir*rotatex) / rotVal, 1.0, 0, 0);
+				glRotatef((rotDir*rotatey) / rotVal, 0, 1.0, 0);
+			};
+			if (rotateOrientation == 2)
+			{
+				glRotatef((rotDir*rotatex) / rotVal, 0.0, 0.0, 1.0);
+			};
+			glTranslatef(-rotX, -roty, -rotz);
 			glBegin(GL_TRIANGLES);
 				glVertex3f(0.0f, -lenght, 0.0f);
 				glVertex3f(lenght, 0.0f, 0.0f);
@@ -206,13 +237,23 @@ void DrawTriangle(GLfloat x, GLfloat y, GLfloat z, //positions: x,y,x
 	}
 }
 
-void firstExcercise()
+void firstExcercise(GLfloat posX, GLfloat posY, GLfloat posZ,
+					GLfloat rotDir, GLfloat rotValue,         //rotate direction (-1,1), rotate value
+					GLfloat rotX, GLfloat rotY, GLfloat rotZ
+	                )
 {
+	glTranslatef(posX, posY, posZ);
+
 	//central four triangles
 	for (int i = 1; i <= 4; i++)
 	{
-		DrawTriangle(0, 0, 0, 0, 1, 0, 1.0f, 1.0, 1.0, i);
+		DrawTriangle(0, 0, 0, 0, 1, 0, 0.0 ,0.0 ,0.0, 1.0f, 1.0, 1.0, ROTATE_STYLE, i);
 	}
+
+
+	glTranslatef(rotX, rotY, rotZ);
+
+	glRotatef((rotDir*rotatex) / rotValue, rotX, rotY, rotZ);
 
 	////first row of triangles
 	for (int i = -4; i <= 4; i++)
@@ -223,44 +264,44 @@ void firstExcercise()
 			{
 				if (i == 0 && k == 1)
 				{
-					DrawTriangle(i + spread, k + spread, 0, 1, 0, 0, 1.0f, -1.0, 3.0, 1);
+					DrawTriangle(i + spread, k + spread, 0, 1, 0, 0, 0.33, 0.33, 0, 1.0f, -1.0, 3.0, ROTATE_STYLE, 1);
 				}
 				if (i == 1 && k == 0)
 				{
-					DrawTriangle(i + spread, k + spread, 0, 0, 0, 1, 1.0f, -1.0, 3.0, 1);
+					DrawTriangle(i + spread, k + spread, 0, 0, 0, 1, 0.33, 0.33, 0, 1.0f, -1.0, 3.0, ROTATE_STYLE, 1);
 				}
 			}
 			if (i >= 0 && k <= 0)
 			{
 				if (i == 0 && k == -1)
 				{
-					DrawTriangle(i + spread, k - spread, 0, 0, 0, 1, 1.0f, -1.0, 3.0, 4);
+					DrawTriangle(i + spread, k - spread, 0, 0, 0, 1, 0.33, 0.33, 0, 1.0f, -1.0, 3.0, ROTATE_STYLE, 4);
 				}
 				if (i == 1 && k == 0)
 				{
-					DrawTriangle(i + spread, k - spread, 0, 1, 0, 0, 1.0f, -1.0, 3.0, 4);
+					DrawTriangle(i + spread, k - spread, 0, 1, 0, 0, 0.33, 0.33, 0, 1.0f, -1.0, 3.0, ROTATE_STYLE, 4);
 				}
 			}
 			if (i <= 0 && k >= 0)
 			{
 				if (i == -1 && k == 0)
 				{
-					DrawTriangle(i - spread, k + spread, 0, 1, 0, 0, 1.0f, -1.0, 3.0, 2);
+					DrawTriangle(i - spread, k + spread, 0, 1, 0, 0, 0.33, 0.33, 0, 1.0f, -1.0, 3.0, ROTATE_STYLE, 2);
 				}
 				if (i == 0 && k == 1)
 				{
-					DrawTriangle(i - spread, k + spread, 0, 0, 0, 1, 1.0f, -1.0, 3.0, 2);
+					DrawTriangle(i - spread, k + spread, 0, 0, 0, 1, 0.33, 0.33, 0, 1.0f, -1.0, 3.0, ROTATE_STYLE, 2);
 				}
 			}
 			if (i <= 0 && k <= 0)
 			{
 				if (i == -1 && k == 0)
 				{
-					DrawTriangle(i - spread, k - spread, 0, 0, 0, 1, 1.0f, -1.0, 3.0, 3);
+					DrawTriangle(i - spread, k - spread, 0, 0, 0, 1, 0.33, 0.33, 0, 1.0f, -1.0, 3.0, ROTATE_STYLE, 3);
 				}
 				if (i == 0 && k == -1)
 				{
-					DrawTriangle(i - spread, k - spread, 0, 1, 0, 0, 1.0f, -1.0, 3.0, 3);
+					DrawTriangle(i - spread, k - spread, 0, 1, 0, 0, 0.33, 0.33, 0, 1.0f, -1.0, 3.0, ROTATE_STYLE, 3);
 				}
 			}
 		}
@@ -292,13 +333,13 @@ void Display()
 	//glRotatef(rotatex, 1.0, 0, 0);
 	//glRotatef(rotatey, 0, 1.0, 0);
 	
-//	glutWireTeapot(1.0);
+	//glutWireTeapot(1.0);
 
 	GLfloat j = 0.0;
 	
-	//firstExcercise();
+	firstExcercise(0,0,0,1,1,0,0,1);
 
-	DrawSpring(0.0, 1.0, 1.0,1.0,0.0,0.0,1,1);
+	//DrawSpring(0.5, 0.5, 1.0,1.0,0.0,0.0,1,1);
 
 	// skierowanie poleceñ do wykonania
 	glFlush();
@@ -390,13 +431,13 @@ void SpecialKeys(int key, int x, int y)
 		break;
 
 		// kursor w górê
-	case GLUT_KEY_F2:
+	case GLUT_KEY_F3:
 		rotatex -= 1;
 		spread += 0.001;
 		break;
 
 		// kursor w prawo
-	case GLUT_KEY_F3:
+	case GLUT_KEY_F2:
 		rotatey += 1;
 		spread += 0.001;
 		break;
@@ -445,7 +486,7 @@ int main(int argc, char * argv[])
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
 
 	// rozmiary g³ównego okna programu
-	glutInitWindowSize(400, 400);
+	glutInitWindowSize(800, 800);
 
 	// utworzenie g³ównego okna programu
 #ifdef WIN32
