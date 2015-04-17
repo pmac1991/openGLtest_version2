@@ -79,6 +79,7 @@ void DrawSpring(GLfloat x, GLfloat y, GLfloat z, //positions: x,y,x
 					glVertex3f(xAxisSpringEquation(t, u), yAxisSpringEquation(t, u), zAxisSpringEquation(t, u));
 				}
 			}
+			glEnd();
 	glPopMatrix();
 }
 
@@ -340,7 +341,7 @@ void Display()
 	//glRotatef(30, 1.0, 0, 0);
 	//glRotatef(90, 0, 1.0, 0);
 
-	DrawSpring(0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1, 1);
+	DrawSpring(0.0, 0.0, 0.0, 0.0, 0.0, 1.0, -1, 3);
 
 	// skierowanie poleceñ do wykonania
 	glFlush();
