@@ -1,4 +1,4 @@
-﻿Build started 2015-04-27 10:46:41.
+﻿Build started 2015-04-27 19:06:26.
      1>Project "C:\Users\piotr_komp\Documents\Visual Studio 2013\Projects\OpenGLSampleV2\OpenGLSample\OpenGLSample.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\Users\piotr_komp\Documents\Visual Studio 2013\Projects\OpenGLSampleV2\packages\nupengl.core.0.0.0.1\build\native\../..//build/native/include/" /I"C:\Program Files\Microsoft SDKs\Kinect\v1.8\inc\\" /I"C:\Users\piotr_komp\Documents\Visual Studio 2013\Projects\OpenGLSampleV2" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
@@ -8,7 +8,7 @@
      1>c:\users\piotr_komp\documents\visual studio 2013\projects\openglsamplev2\openglsample\main.cpp(9): warning C4067: unexpected tokens following preprocessor directive - expected a newline
      1>c:\users\piotr_komp\documents\visual studio 2013\projects\openglsamplev2\openglsample\main.cpp(10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
      1>c:\users\piotr_komp\documents\visual studio 2013\projects\openglsamplev2\openglsample\main.cpp(12): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-     1>c:\users\piotr_komp\documents\visual studio 2013\projects\openglsamplev2\openglsample\main.cpp(80): warning C4244: 'return' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>c:\users\piotr_komp\documents\visual studio 2013\projects\openglsamplev2\openglsample\main.cpp(62): warning C4305: 'initializing' : truncation from 'double' to 'GLfloat'
      1>c:\users\piotr_komp\documents\visual studio 2013\projects\openglsamplev2\openglsample\main.cpp(107): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
      1>c:\users\piotr_komp\documents\visual studio 2013\projects\openglsamplev2\openglsample\main.cpp(109): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
      1>c:\users\piotr_komp\documents\visual studio 2013\projects\openglsamplev2\openglsample\main.cpp(119): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
@@ -41,4 +41,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:01.44
+Time Elapsed 00:00:01.26

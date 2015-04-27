@@ -59,7 +59,7 @@ GLfloat spread = 0.0;
 
 GLuint metalTexture;
 
-GLfloat springScale = 1;
+GLfloat springScale = 0.6;
 
 GLfloat timeCounter = 0;
 
@@ -75,9 +75,9 @@ GLfloat yAxisSpringEquation(GLfloat t, GLfloat u)
 	return(sin(t) * (3 + cos(u)));
 }
 
-GLfloat zAxisSpringEquation(GLfloat t, GLfloat u)
+GLfloat zAxisSpringEquation(GLfloat t, GLfloat u, GLfloat zParam)
 {
-	return(0.6*t + sin(u));
+	return(zParam * t + sin(u));
 }
 
 void DrawSpring(GLfloat x, GLfloat y, GLfloat z, //positions: x,y,x
@@ -95,7 +95,7 @@ void DrawSpring(GLfloat x, GLfloat y, GLfloat z, //positions: x,y,x
 			glRotatef((rotDir*rotatex) / rotVal, 1.0, 0, 0);
 			glRotatef((rotDir*rotatey) / rotVal, 0, 1.0, 0);		
 
-			glScalef(1, 1, scaleParam);
+			
 
 			if (textureEnable)
 			{
@@ -110,27 +110,27 @@ void DrawSpring(GLfloat x, GLfloat y, GLfloat z, //positions: x,y,x
 				{
 					if (textureEnable)
 					{
-						glTexCoord3f(xAxisSpringEquation(t, u), yAxisSpringEquation(t, u), zAxisSpringEquation(t, u));
+						glTexCoord3f(xAxisSpringEquation(t, u), yAxisSpringEquation(t, u), zAxisSpringEquation(t, u, scaleParam));
 					}
-					glVertex3f(xAxisSpringEquation(t, u), yAxisSpringEquation(t, u), zAxisSpringEquation(t, u));
+					glVertex3f(xAxisSpringEquation(t, u), yAxisSpringEquation(t, u), zAxisSpringEquation(t, u, scaleParam));
 
 					if (textureEnable)
 					{
-						glTexCoord3f(xAxisSpringEquation(t + SPRING_STEP, u + SPRING_STEP), yAxisSpringEquation(t + SPRING_STEP, u + SPRING_STEP), zAxisSpringEquation(t + SPRING_STEP, u + SPRING_STEP));
+						glTexCoord3f(xAxisSpringEquation(t + SPRING_STEP, u + SPRING_STEP), yAxisSpringEquation(t + SPRING_STEP, u + SPRING_STEP), zAxisSpringEquation(t + SPRING_STEP, u + SPRING_STEP, scaleParam));
 					}
-					glVertex3f(xAxisSpringEquation(t + SPRING_STEP, u + SPRING_STEP), yAxisSpringEquation(t + SPRING_STEP, u + SPRING_STEP), zAxisSpringEquation(t + SPRING_STEP, u + SPRING_STEP));
+					glVertex3f(xAxisSpringEquation(t + SPRING_STEP, u + SPRING_STEP), yAxisSpringEquation(t + SPRING_STEP, u + SPRING_STEP), zAxisSpringEquation(t + SPRING_STEP, u + SPRING_STEP, scaleParam));
 
 					if (textureEnable)
 					{
-						glTexCoord3f(xAxisSpringEquation(t + SPRING_JUMP, u + SPRING_JUMP), yAxisSpringEquation(t + SPRING_JUMP, u + SPRING_JUMP), zAxisSpringEquation(t + SPRING_JUMP, u + SPRING_JUMP));
+						glTexCoord3f(xAxisSpringEquation(t + SPRING_JUMP, u + SPRING_JUMP), yAxisSpringEquation(t + SPRING_JUMP, u + SPRING_JUMP), zAxisSpringEquation(t + SPRING_JUMP, u + SPRING_JUMP, scaleParam));
 					}
-					glVertex3f(xAxisSpringEquation(t + SPRING_JUMP, u + SPRING_JUMP), yAxisSpringEquation(t + SPRING_JUMP, u + SPRING_JUMP), zAxisSpringEquation(t + SPRING_JUMP, u + SPRING_JUMP));
+					glVertex3f(xAxisSpringEquation(t + SPRING_JUMP, u + SPRING_JUMP), yAxisSpringEquation(t + SPRING_JUMP, u + SPRING_JUMP), zAxisSpringEquation(t + SPRING_JUMP, u + SPRING_JUMP, scaleParam));
 
 					if (textureEnable)
 					{
-						glTexCoord3f(xAxisSpringEquation(t + SPRING_STEP + SPRING_JUMP, u + SPRING_STEP), yAxisSpringEquation(t + SPRING_STEP + SPRING_JUMP, u + SPRING_STEP), zAxisSpringEquation(t + SPRING_STEP + SPRING_JUMP, u + SPRING_STEP));
+						glTexCoord3f(xAxisSpringEquation(t + SPRING_STEP + SPRING_JUMP, u + SPRING_STEP), yAxisSpringEquation(t + SPRING_STEP + SPRING_JUMP, u + SPRING_STEP), zAxisSpringEquation(t + SPRING_STEP + SPRING_JUMP, u + SPRING_STEP, scaleParam));
 					}
-					glVertex3f(xAxisSpringEquation(t + SPRING_STEP + SPRING_JUMP, u + SPRING_STEP ), yAxisSpringEquation(t + SPRING_STEP + SPRING_JUMP, u + SPRING_STEP ), zAxisSpringEquation(t + SPRING_STEP + SPRING_JUMP, u + SPRING_STEP));
+					glVertex3f(xAxisSpringEquation(t + SPRING_STEP + SPRING_JUMP, u + SPRING_STEP), yAxisSpringEquation(t + SPRING_STEP + SPRING_JUMP, u + SPRING_STEP), zAxisSpringEquation(t + SPRING_STEP + SPRING_JUMP, u + SPRING_STEP, scaleParam));
 
 				}
 			}
@@ -496,19 +496,19 @@ static void timerCallback(int value)
 	/* Do timer processing */
 	/* maybe glutPostRedisplay(), if necessary */
 
-	if (springScale < 1.5 && spirngScaleDir == true)
+	if (springScale < 1 && spirngScaleDir == true)
 	{
 		springScale += cosf(timeCounter);
 	}
-	if (springScale > 0.5 && spirngScaleDir == false)
+	if (springScale > 0.6 && spirngScaleDir == false)
 	{
 		springScale -= cosf(timeCounter);
 	}
-	if (springScale < 0.5)
+	if (springScale < 0.6)
 	{
 		spirngScaleDir = true;
 	}
-	if (springScale > 1.5)
+	if (springScale > 1)
 	{
 		spirngScaleDir = false;
 	}
