@@ -1,4 +1,6 @@
 
+#pragma warning (disable : 4996)
+
 #include "GL\glew.h"
 #include "GL\freeglut.h"
 #include<iostream>
@@ -11,7 +13,16 @@
 
 #define PI	3.14f
 #define SPRING_STEP	0.1
+#define SPRING_JUMP 0.9
 #define ROTATE_STYLE 2
+
+#define FRUSTUM_LEFT -2.0
+#define FRUSTUM_RIGHT 2.0
+#define FRUSTUM_BOTTOM -2.0
+#define FRUSTUM_TOP 2.0
+#define FRUSTUM_NEAR 1.0
+#define FRUSTUM_FAR 25.0
+
 
 using namespace Core;
 
@@ -46,6 +57,14 @@ GLfloat spready = 0.0;
 
 GLfloat spread = 0.0;
 
+GLuint metalTexture;
+
+GLfloat springScale = 1;
+
+GLfloat timeCounter = 0;
+
+bool spirngScaleDir = true; //true up false down
+
 GLfloat xAxisSpringEquation(GLfloat t,GLfloat u)
 {
 	return(cos(t) * (3 + cos(u)));
@@ -63,20 +82,56 @@ GLfloat zAxisSpringEquation(GLfloat t, GLfloat u)
 
 void DrawSpring(GLfloat x, GLfloat y, GLfloat z, //positions: x,y,x
 				GLfloat R, GLfloat G, GLfloat B, //colour: R,G,B
-				GLfloat rotDir, GLfloat rotVal  //rotate direction (-1,1), rotate value
+				GLfloat rotDir, GLfloat rotVal,  //rotate direction (-1,1), rotate value
+				GLuint texture, bool textureEnable, // texture to use, enable texturing
+				GLfloat lenghtParam, GLfloat diameterParam,
+				GLfloat scaleParam
 				)
 {
 	glPushMatrix();
 		glColor3f(R, G, B);
+		//glColor4f(R, G, B, 1.0);
 		glTranslatef(x, y, z);
 			glRotatef((rotDir*rotatex) / rotVal, 1.0, 0, 0);
-			glRotatef((rotDir*rotatey) / rotVal, 0, 1.0, 0);
-			glBegin(GL_LINES);
-			for (GLfloat t = 0.0; t < (8 * PI); t = t + SPRING_STEP)
+			glRotatef((rotDir*rotatey) / rotVal, 0, 1.0, 0);		
+
+			glScalef(1, 1, scaleParam);
+
+			if (textureEnable)
 			{
-				for (GLfloat u = 0.0; u < (2 * PI); u = u + SPRING_STEP)
+				glEnable(GL_TEXTURE_2D);
+
+				glBindTexture(GL_TEXTURE_2D, metalTexture);
+			}
+			glBegin(GL_QUADS);
+			for (GLfloat t = 0.0; t < (lenghtParam * PI); t = t + SPRING_STEP)
+			{
+				for (GLfloat u = 0.0; u < (diameterParam * PI); u = u + SPRING_STEP)
 				{
+					if (textureEnable)
+					{
+						glTexCoord3f(xAxisSpringEquation(t, u), yAxisSpringEquation(t, u), zAxisSpringEquation(t, u));
+					}
 					glVertex3f(xAxisSpringEquation(t, u), yAxisSpringEquation(t, u), zAxisSpringEquation(t, u));
+
+					if (textureEnable)
+					{
+						glTexCoord3f(xAxisSpringEquation(t + SPRING_STEP, u + SPRING_STEP), yAxisSpringEquation(t + SPRING_STEP, u + SPRING_STEP), zAxisSpringEquation(t + SPRING_STEP, u + SPRING_STEP));
+					}
+					glVertex3f(xAxisSpringEquation(t + SPRING_STEP, u + SPRING_STEP), yAxisSpringEquation(t + SPRING_STEP, u + SPRING_STEP), zAxisSpringEquation(t + SPRING_STEP, u + SPRING_STEP));
+
+					if (textureEnable)
+					{
+						glTexCoord3f(xAxisSpringEquation(t + SPRING_JUMP, u + SPRING_JUMP), yAxisSpringEquation(t + SPRING_JUMP, u + SPRING_JUMP), zAxisSpringEquation(t + SPRING_JUMP, u + SPRING_JUMP));
+					}
+					glVertex3f(xAxisSpringEquation(t + SPRING_JUMP, u + SPRING_JUMP), yAxisSpringEquation(t + SPRING_JUMP, u + SPRING_JUMP), zAxisSpringEquation(t + SPRING_JUMP, u + SPRING_JUMP));
+
+					if (textureEnable)
+					{
+						glTexCoord3f(xAxisSpringEquation(t + SPRING_STEP + SPRING_JUMP, u + SPRING_STEP), yAxisSpringEquation(t + SPRING_STEP + SPRING_JUMP, u + SPRING_STEP), zAxisSpringEquation(t + SPRING_STEP + SPRING_JUMP, u + SPRING_STEP));
+					}
+					glVertex3f(xAxisSpringEquation(t + SPRING_STEP + SPRING_JUMP, u + SPRING_STEP ), yAxisSpringEquation(t + SPRING_STEP + SPRING_JUMP, u + SPRING_STEP ), zAxisSpringEquation(t + SPRING_STEP + SPRING_JUMP, u + SPRING_STEP));
+
 				}
 			}
 			glEnd();
@@ -309,6 +364,62 @@ void firstExcercise(GLfloat posX, GLfloat posY, GLfloat posZ,
 	}
 }
 
+
+GLuint LoadTexture(const char * filename, int width, int height)
+{
+	GLuint texture;
+	unsigned char * data;
+	FILE * file;
+
+	//The following code will read in our RAW file
+		file = fopen(filename, "rb");  //We need to open our file
+		if (file == NULL) return 0;  //If our file is empty, set our texture to empty
+
+
+			data = (unsigned char *)malloc(width * height * 3); //assign the nessecary memory for the texture
+
+
+			fread(data, width * height * 3, 1, file);  //read in our file
+			fclose(file); //close our file, no point leaving it open
+
+			glGenTextures(1, &texture); //then we need to tell OpenGL that we are generating a texture
+			glBindTexture(GL_TEXTURE_2D, texture); //now we bind the texture that we are working with
+			glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE); //set texture environment parameters
+			//The parameter GL_MODULATE will blend the texture with whatever is underneath, setting it to GL_DECAL
+			//will tell the texture to replace whatever is on the object.
+
+			//here we are setting what textures to use and when.The MIN filter is which quality to show
+			//when the texture is near the view, and the MAG filter is which quality to show when the texture
+			//is far from the view.
+
+			//The qualities are(in order from worst to best)
+			//GL_NEAREST
+			//GL_LINEAR
+			//GL_LINEAR_MIPMAP_NEAREST
+			//GL_LINEAR_MIPMAP_LINEAR
+
+			//The two mipmap variables only work in textures with generated mipmaps, so you will see that in action
+			//in a later tutorial.
+
+			//And if you go and use extensions, you can use Anisotropic filtering textures which are of an
+			//even better quality, but this will do for now.
+
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	//Here we are setting the parameter to repeat the texture instead of clamping the texture
+		//to the edge of our shape.
+
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+	//Generate the texture
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+
+	free(data);// free the texture
+	return texture;// return the texture data
+}
+
 // funkcja generuj¹ca scenê 3D
 void Display()
 {
@@ -330,18 +441,13 @@ void Display()
 	// kolor krawêdzi szeœcianu
 	glColor3f(0.0, 0.0, 0.0);
 
-	// obroty obiektu - klawisze kursora
-	//glRotatef(rotatex, 1.0, 0, 0);
-	//glRotatef(rotatey, 0, 1.0, 0);
-	
-	///glutWireTeapot(1.0);
-	
 	//firstExcercise(0,0,0,1,1,0,0,1);
 
-	//glRotatef(30, 1.0, 0, 0);
-	//glRotatef(90, 0, 1.0, 0);
+	DrawSpring(0.0, 0.0, 0.0, 0.3, 0.3, 0.3, -1, 3,metalTexture,true,8,2,springScale);
 
-	DrawSpring(0.0, 0.0, 0.0, 0.0, 0.0, 1.0, -1, 3);
+	glRotatef(rotatex, 1.0, 0, 0);
+	glRotatef(rotatey, 0, 1.0, 0);
+	glutSolidSphere(5, 50, 50);
 
 	// skierowanie poleceñ do wykonania
 	glFlush();
@@ -368,16 +474,16 @@ void Reshape(int width, int height)
 	{
 		// wysokoœæ okna wiêksza od wysokoœci okna
 		if (width < height && width > 0)
-			glFrustum(-2.0, 2.0, -2.0 * height / width, 2.0 * height / width, 1.0, 5.0);
+			glFrustum(FRUSTUM_LEFT, FRUSTUM_RIGHT, FRUSTUM_BOTTOM * height / width, FRUSTUM_TOP * height / width, FRUSTUM_NEAR, FRUSTUM_FAR);
 		else
 
 			// szerokoœæ okna wiêksza lub równa wysokoœci okna
 			if (width >= height && height > 0)
-				glFrustum(-2.0 * width / height, 2.0 * width / height, -2.0, 2.0, 1.0, 5.0);
+				glFrustum(FRUSTUM_LEFT * width / height, FRUSTUM_RIGHT * width / height, FRUSTUM_BOTTOM, FRUSTUM_TOP, FRUSTUM_NEAR, FRUSTUM_FAR);
 
 	}
 	else
-		glFrustum(-2.0, 2.0, -2.0, 2.0, 1.0, 5.0);
+		glFrustum(FRUSTUM_LEFT, FRUSTUM_RIGHT, FRUSTUM_BOTTOM, FRUSTUM_TOP, FRUSTUM_NEAR, FRUSTUM_FAR);
 
 	// generowanie sceny 3D
 	Display();
@@ -385,17 +491,63 @@ void Reshape(int width, int height)
 
 // obs³uga klawiatury
 
+static void timerCallback(int value)
+{
+	/* Do timer processing */
+	/* maybe glutPostRedisplay(), if necessary */
+
+	if (springScale < 1.5 && spirngScaleDir == true)
+	{
+		springScale += cosf(timeCounter);
+	}
+	if (springScale > 0.5 && spirngScaleDir == false)
+	{
+		springScale -= cosf(timeCounter);
+	}
+	if (springScale < 0.5)
+	{
+		spirngScaleDir = true;
+	}
+	if (springScale > 1.5)
+	{
+		spirngScaleDir = false;
+	}
+
+	timeCounter += 1;
+
+	Display();
+
+	/* call back again after elapsedUSecs have passed */
+	glutTimerFunc(10, timerCallback, value);
+}
+
 void Keyboard(unsigned char key, int x, int y)
 {
-	// klawisz +
-	if (key == '+')
-		eyez -= 0.1;
-	else
 
-		// klawisz -
-		if (key == '-')
+	switch (key)
+	{
+		case '+':
+		{
+			eyez -= 0.1;
+			break;
+		}
+		case '-':
+		{
 			eyez += 0.1;
-
+			break;
+		}
+		case 'w':
+		{
+			springScale += 0.1;
+			break;
+		}
+		case 's':
+		{
+			springScale -= 0.1;
+			break;
+		}
+	}
+	
 	// odrysowanie okna
 	Reshape(glutGet(GLUT_WINDOW_WIDTH), glutGet(GLUT_WINDOW_HEIGHT));
 }
@@ -499,6 +651,10 @@ int main(int argc, char * argv[])
 	glutCreateWindow("Szescian 4");
 #endif
 
+	//Ustawianie tekstury
+	metalTexture = LoadTexture("C:\\Users\\piotr_komp\\Documents\\Visual Studio 2013\\Projects\\OpenGLSampleV2\\bmetal.bmp", 256, 256);
+
+
 	// do³¹czenie funkcji generuj¹cej scenê 3D
 	glutDisplayFunc(Display);
 
@@ -510,6 +666,8 @@ int main(int argc, char * argv[])
 
 	// do³¹czenie funkcji obs³ugi klawiszy funkcyjnych i klawiszy kursora
 	glutSpecialFunc(SpecialKeys);
+
+	glutTimerFunc(100, timerCallback, springScale);
 
 	// utworzenie menu podrêcznego
 	glutCreateMenu(Menu);

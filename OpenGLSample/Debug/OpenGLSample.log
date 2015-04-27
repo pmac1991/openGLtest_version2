@@ -1,28 +1,38 @@
-﻿Build started 2015-04-17 08:37:19.
+﻿Build started 2015-04-27 10:46:41.
      1>Project "C:\Users\piotr_komp\Documents\Visual Studio 2013\Projects\OpenGLSampleV2\OpenGLSample\OpenGLSample.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\Users\piotr_komp\Documents\Visual Studio 2013\Projects\OpenGLSampleV2\packages\nupengl.core.0.0.0.1\build\native\../..//build/native/include/" /I"C:\Program Files\Microsoft SDKs\Kinect\v1.8\inc\\" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\Users\piotr_komp\Documents\Visual Studio 2013\Projects\OpenGLSampleV2\packages\nupengl.core.0.0.0.1\build\native\../..//build/native/include/" /I"C:\Program Files\Microsoft SDKs\Kinect\v1.8\inc\\" /I"C:\Users\piotr_komp\Documents\Visual Studio 2013\Projects\OpenGLSampleV2" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
          main.cpp
-     1>c:\users\piotr_komp\documents\visual studio 2013\projects\openglsamplev2\openglsample\main.cpp(5): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-     1>c:\users\piotr_komp\documents\visual studio 2013\projects\openglsamplev2\openglsample\main.cpp(6): warning C4067: unexpected tokens following preprocessor directive - expected a newline
      1>c:\users\piotr_komp\documents\visual studio 2013\projects\openglsamplev2\openglsample\main.cpp(7): warning C4067: unexpected tokens following preprocessor directive - expected a newline
      1>c:\users\piotr_komp\documents\visual studio 2013\projects\openglsamplev2\openglsample\main.cpp(8): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+     1>c:\users\piotr_komp\documents\visual studio 2013\projects\openglsamplev2\openglsample\main.cpp(9): warning C4067: unexpected tokens following preprocessor directive - expected a newline
      1>c:\users\piotr_komp\documents\visual studio 2013\projects\openglsamplev2\openglsample\main.cpp(10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-     1>c:\users\piotr_komp\documents\visual studio 2013\projects\openglsamplev2\openglsample\main.cpp(61): warning C4244: 'return' : conversion from 'double' to 'GLfloat', possible loss of data
-     1>c:\users\piotr_komp\documents\visual studio 2013\projects\openglsamplev2\openglsample\main.cpp(75): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
-     1>c:\users\piotr_komp\documents\visual studio 2013\projects\openglsamplev2\openglsample\main.cpp(77): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
-     1>c:\users\piotr_komp\documents\visual studio 2013\projects\openglsamplev2\openglsample\main.cpp(268): warning C4305: 'argument' : truncation from 'double' to 'GLfloat'
-     1>c:\users\piotr_komp\documents\visual studio 2013\projects\openglsamplev2\openglsample\main.cpp(272): warning C4305: 'argument' : truncation from 'double' to 'GLfloat'
-     1>c:\users\piotr_komp\documents\visual studio 2013\projects\openglsamplev2\openglsample\main.cpp(279): warning C4305: 'argument' : truncation from 'double' to 'GLfloat'
-     1>c:\users\piotr_komp\documents\visual studio 2013\projects\openglsamplev2\openglsample\main.cpp(283): warning C4305: 'argument' : truncation from 'double' to 'GLfloat'
-     1>c:\users\piotr_komp\documents\visual studio 2013\projects\openglsamplev2\openglsample\main.cpp(290): warning C4305: 'argument' : truncation from 'double' to 'GLfloat'
-     1>c:\users\piotr_komp\documents\visual studio 2013\projects\openglsamplev2\openglsample\main.cpp(294): warning C4305: 'argument' : truncation from 'double' to 'GLfloat'
-     1>c:\users\piotr_komp\documents\visual studio 2013\projects\openglsamplev2\openglsample\main.cpp(301): warning C4305: 'argument' : truncation from 'double' to 'GLfloat'
-     1>c:\users\piotr_komp\documents\visual studio 2013\projects\openglsamplev2\openglsample\main.cpp(305): warning C4305: 'argument' : truncation from 'double' to 'GLfloat'
-     1>c:\users\piotr_komp\documents\visual studio 2013\projects\openglsamplev2\openglsample\main.cpp(432): warning C4305: '+=' : truncation from 'double' to 'GLfloat'
-     1>c:\users\piotr_komp\documents\visual studio 2013\projects\openglsamplev2\openglsample\main.cpp(438): warning C4305: '+=' : truncation from 'double' to 'GLfloat'
-     1>c:\users\piotr_komp\documents\visual studio 2013\projects\openglsamplev2\openglsample\main.cpp(444): warning C4305: '+=' : truncation from 'double' to 'GLfloat'
-     1>c:\users\piotr_komp\documents\visual studio 2013\projects\openglsamplev2\openglsample\main.cpp(450): warning C4305: '+=' : truncation from 'double' to 'GLfloat'
+     1>c:\users\piotr_komp\documents\visual studio 2013\projects\openglsamplev2\openglsample\main.cpp(12): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+     1>c:\users\piotr_komp\documents\visual studio 2013\projects\openglsamplev2\openglsample\main.cpp(80): warning C4244: 'return' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>c:\users\piotr_komp\documents\visual studio 2013\projects\openglsamplev2\openglsample\main.cpp(107): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>c:\users\piotr_komp\documents\visual studio 2013\projects\openglsamplev2\openglsample\main.cpp(109): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>c:\users\piotr_komp\documents\visual studio 2013\projects\openglsamplev2\openglsample\main.cpp(119): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>c:\users\piotr_komp\documents\visual studio 2013\projects\openglsamplev2\openglsample\main.cpp(121): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>c:\users\piotr_komp\documents\visual studio 2013\projects\openglsamplev2\openglsample\main.cpp(125): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>c:\users\piotr_komp\documents\visual studio 2013\projects\openglsamplev2\openglsample\main.cpp(127): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>c:\users\piotr_komp\documents\visual studio 2013\projects\openglsamplev2\openglsample\main.cpp(131): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>c:\users\piotr_komp\documents\visual studio 2013\projects\openglsamplev2\openglsample\main.cpp(133): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>c:\users\piotr_komp\documents\visual studio 2013\projects\openglsamplev2\openglsample\main.cpp(323): warning C4305: 'argument' : truncation from 'double' to 'GLfloat'
+     1>c:\users\piotr_komp\documents\visual studio 2013\projects\openglsamplev2\openglsample\main.cpp(327): warning C4305: 'argument' : truncation from 'double' to 'GLfloat'
+     1>c:\users\piotr_komp\documents\visual studio 2013\projects\openglsamplev2\openglsample\main.cpp(334): warning C4305: 'argument' : truncation from 'double' to 'GLfloat'
+     1>c:\users\piotr_komp\documents\visual studio 2013\projects\openglsamplev2\openglsample\main.cpp(338): warning C4305: 'argument' : truncation from 'double' to 'GLfloat'
+     1>c:\users\piotr_komp\documents\visual studio 2013\projects\openglsamplev2\openglsample\main.cpp(345): warning C4305: 'argument' : truncation from 'double' to 'GLfloat'
+     1>c:\users\piotr_komp\documents\visual studio 2013\projects\openglsamplev2\openglsample\main.cpp(349): warning C4305: 'argument' : truncation from 'double' to 'GLfloat'
+     1>c:\users\piotr_komp\documents\visual studio 2013\projects\openglsamplev2\openglsample\main.cpp(356): warning C4305: 'argument' : truncation from 'double' to 'GLfloat'
+     1>c:\users\piotr_komp\documents\visual studio 2013\projects\openglsamplev2\openglsample\main.cpp(360): warning C4305: 'argument' : truncation from 'double' to 'GLfloat'
+     1>c:\users\piotr_komp\documents\visual studio 2013\projects\openglsamplev2\openglsample\main.cpp(446): warning C4305: 'argument' : truncation from 'double' to 'GLfloat'
+     1>c:\users\piotr_komp\documents\visual studio 2013\projects\openglsamplev2\openglsample\main.cpp(541): warning C4305: '+=' : truncation from 'double' to 'GLfloat'
+     1>c:\users\piotr_komp\documents\visual studio 2013\projects\openglsamplev2\openglsample\main.cpp(546): warning C4305: '-=' : truncation from 'double' to 'GLfloat'
+     1>c:\users\piotr_komp\documents\visual studio 2013\projects\openglsamplev2\openglsample\main.cpp(584): warning C4305: '+=' : truncation from 'double' to 'GLfloat'
+     1>c:\users\piotr_komp\documents\visual studio 2013\projects\openglsamplev2\openglsample\main.cpp(590): warning C4305: '+=' : truncation from 'double' to 'GLfloat'
+     1>c:\users\piotr_komp\documents\visual studio 2013\projects\openglsamplev2\openglsample\main.cpp(596): warning C4305: '+=' : truncation from 'double' to 'GLfloat'
+     1>c:\users\piotr_komp\documents\visual studio 2013\projects\openglsamplev2\openglsample\main.cpp(602): warning C4305: '+=' : truncation from 'double' to 'GLfloat'
+     1>c:\users\piotr_komp\documents\visual studio 2013\projects\openglsamplev2\openglsample\main.cpp(670): warning C4244: 'argument' : conversion from 'GLfloat' to 'int', possible loss of data
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\piotr_komp\Documents\Visual Studio 2013\Projects\OpenGLSampleV2\Debug\OpenGLSample.exe" /INCREMENTAL /NOLOGO "C:\Users\piotr_komp\Documents\Visual Studio 2013\Projects\OpenGLSampleV2\packages\nupengl.core.0.0.0.1\build\native\../..//build/native/lib/Win32\v120\glew32.lib" "C:\Users\piotr_komp\Documents\Visual Studio 2013\Projects\OpenGLSampleV2\packages\nupengl.core.0.0.0.1\build\native\../..//build/native/lib/Win32\v120\glfw3dll.lib" "C:\Users\piotr_komp\Documents\Visual Studio 2013\Projects\OpenGLSampleV2\packages\nupengl.core.0.0.0.1\build\native\../..//build/native/lib/Win32\v120\freeglut.lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\piotr_komp\Documents\Visual Studio 2013\Projects\OpenGLSampleV2\Debug\OpenGLSample.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\piotr_komp\Documents\Visual Studio 2013\Projects\OpenGLSampleV2\Debug\OpenGLSample.lib" /MACHINE:X86 Debug\main.obj
          Debug\Shader_Loader.obj
@@ -31,4 +41,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:01.58
+Time Elapsed 00:00:01.44
