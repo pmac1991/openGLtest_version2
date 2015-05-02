@@ -59,9 +59,13 @@ GLfloat spread = 0.0;
 
 GLuint metalTexture;
 
+GLuint sphereTexture;
+
 GLfloat springScale = 0.6;
 
 GLfloat timeCounter = 0;
+
+GLUquadric *quad;
 
 bool spirngScaleDir = true; //true up false down
 
@@ -420,6 +424,24 @@ GLuint LoadTexture(const char * filename, int width, int height)
 	return texture;// return the texture data
 }
 
+void DrawSphere(GLUquadric *quad,
+	            GLdouble radius, GLint slices, GLint stacks,
+				GLuint textureId)
+{
+
+	glEnable(GL_TEXTURE_2D);
+
+	glBindTexture(GL_TEXTURE_2D, textureId);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+	gluQuadricTexture(quad, 1);
+
+	gluSphere(quad, 2, 20, 20);
+}
+
 // funkcja generuj¹ca scenê 3D
 void Display()
 {
@@ -443,11 +465,13 @@ void Display()
 
 	//firstExcercise(0,0,0,1,1,0,0,1);
 
-	DrawSpring(0.0, 0.0, 0.0, 0.3, 0.3, 0.3, -1, 3,metalTexture,true,8,2,springScale);
+	//DrawSpring(0.0, 0.0, 0.0, 0.3, 0.3, 0.3, -1, 3,metalTexture,true,8,2,springScale);
 
-	glRotatef(rotatex, 1.0, 0, 0);
-	glRotatef(rotatey, 0, 1.0, 0);
-	glutSolidSphere(5, 50, 50);
+	//glRotatef(rotatex, 1.0, 0, 0);
+	//glRotatef(rotatey, 0, 1.0, 0);
+	//glutSolidSphere(5, 50, 50);
+
+	DrawSphere(quad, 2, 20, 20, sphereTexture);
 
 	// skierowanie poleceñ do wykonania
 	glFlush();
@@ -653,6 +677,11 @@ int main(int argc, char * argv[])
 
 	//Ustawianie tekstury
 	metalTexture = LoadTexture("C:\\Users\\piotr_komp\\Documents\\Visual Studio 2013\\Projects\\OpenGLSampleV2\\bmetal.bmp", 256, 256);
+
+	sphereTexture = LoadTexture("C:\\Users\\piotr_komp\\Documents\\Visual Studio 2013\\Projects\\OpenGLSampleV2\\earth.bmp", 1024, 512);
+
+	quad = gluNewQuadric();
+
 
 
 	// do³¹czenie funkcji generuj¹cej scenê 3D
