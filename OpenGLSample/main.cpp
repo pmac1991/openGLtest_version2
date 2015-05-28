@@ -49,6 +49,12 @@ GLdouble centerx = 0;
 GLdouble centery = 0;
 GLdouble centerz = -100;
 
+//spring top coordinates
+
+GLfloat springTopX = 0;
+GLfloat springTopY = 0;
+GLfloat springTopZ = 0;
+
 GLfloat rotatex = 0.0;
 GLfloat rotatey = 0.0;
 
@@ -84,6 +90,80 @@ GLfloat zAxisSpringEquation(GLfloat t, GLfloat u, GLfloat zParam)
 	return(zParam * t + sin(u));
 }
 
+void DrawCeling(GLfloat x, GLfloat y, GLfloat z, //positions: x,y,x
+				GLfloat R, GLfloat G, GLfloat B, //colour: R,G,B
+				GLfloat rotDir, GLfloat rotVal,  //rotate direction (-1,1), rotate value
+				GLuint texture, bool textureEnable // texture to use, enable texturing
+				)
+{
+	glPushMatrix();
+	glColor3f(R, G, B);
+		glTranslatef(x, y, z);
+		glRotatef((rotDir*rotatex) / rotVal, 1.0, 0, 0);
+		glRotatef((rotDir*rotatey) / rotVal, 0, 1.0, 0);
+
+		glScalef(20, 20, 0);
+
+		glBegin(GL_QUADS);
+			if (textureEnable)
+			{
+				glEnable(GL_TEXTURE_2D);
+
+				glBindTexture(GL_TEXTURE_2D, metalTexture);
+			}
+
+			if (textureEnable)
+			{
+				glTexCoord3f(x-1,y-1,z);
+			}
+			glVertex3f(x-1,y-1,z);
+
+			if (textureEnable)
+			{
+				glTexCoord3f(x - 1, y + 1, z);
+			}
+			glVertex3f(x - 1, y + 1, z);
+
+			if (textureEnable)
+			{
+				glTexCoord3f(x + 1, y - 1, z);
+			}
+			glVertex3f(x + 1, y - 1, z);
+
+			if (textureEnable)
+			{
+				glTexCoord3f(x + 1, y + 1, z);
+			}
+			glVertex3f(x + 1, y + 1, z);
+
+		glEnd();
+	glPopMatrix();
+}
+
+void DrawSphere(GLUquadric *quad,
+				GLdouble radius, GLint slices, GLint stacks,
+				GLfloat x, GLfloat y, GLfloat z, //positions: x,y,x
+				GLfloat R, GLfloat G, GLfloat B, //colour: R,G,B
+				GLfloat rotDir, GLfloat rotVal,  //rotate direction (-1,1), rotate value
+				GLuint textureId)
+{
+	glTranslatef(x, y, z);
+	glRotatef((rotDir*rotatex) / rotVal, 1.0, 0, 0);
+	glRotatef((rotDir*rotatey) / rotVal, 0, 1.0, 0);
+
+	glEnable(GL_TEXTURE_2D);
+
+	glBindTexture(GL_TEXTURE_2D, textureId);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+	gluQuadricTexture(quad, 1);
+
+	gluSphere(quad, 2, 20, 20);
+}
+
 void DrawSpring(GLfloat x, GLfloat y, GLfloat z, //positions: x,y,x
 				GLfloat R, GLfloat G, GLfloat B, //colour: R,G,B
 				GLfloat rotDir, GLfloat rotVal,  //rotate direction (-1,1), rotate value
@@ -99,7 +179,8 @@ void DrawSpring(GLfloat x, GLfloat y, GLfloat z, //positions: x,y,x
 			glRotatef((rotDir*rotatex) / rotVal, 1.0, 0, 0);
 			glRotatef((rotDir*rotatey) / rotVal, 0, 1.0, 0);		
 
-			
+			GLfloat t = 0.0;
+			GLfloat u = 0.0;
 
 			if (textureEnable)
 			{
@@ -108,9 +189,9 @@ void DrawSpring(GLfloat x, GLfloat y, GLfloat z, //positions: x,y,x
 				glBindTexture(GL_TEXTURE_2D, metalTexture);
 			}
 			glBegin(GL_QUADS);
-			for (GLfloat t = 0.0; t < (lenghtParam * PI); t = t + SPRING_STEP)
+			for (t = 0.0; t < (lenghtParam * PI); t = t + SPRING_STEP)
 			{
-				for (GLfloat u = 0.0; u < (diameterParam * PI); u = u + SPRING_STEP)
+				for (u = 0.0; u < (diameterParam * PI); u = u + SPRING_STEP)
 				{
 					if (textureEnable)
 					{
@@ -138,7 +219,70 @@ void DrawSpring(GLfloat x, GLfloat y, GLfloat z, //positions: x,y,x
 
 				}
 			}
+			springTopX = xAxisSpringEquation(t, u);
+			springTopY = yAxisSpringEquation(t, u);
+			springTopZ = zAxisSpringEquation(t, u,scaleParam);
+
 			glEnd();
+	glPopMatrix();
+}
+
+void DrawSpringAndSphere(GLfloat x, GLfloat y, GLfloat z, //positions: x,y,x
+				GLfloat R, GLfloat G, GLfloat B, //colour: R,G,B
+				GLfloat rotDir, GLfloat rotVal,  //rotate direction (-1,1), rotate value
+				GLuint texture, bool textureEnable, // texture to use, enable texturing
+				GLfloat lenghtParam, GLfloat diameterParam,
+				GLfloat scaleParam
+				)
+{
+	glPushMatrix();
+	glColor3f(R, G, B);
+	//glColor4f(R, G, B, 1.0);
+	glTranslatef(x, y, z);
+	glRotatef((rotDir*rotatex) / rotVal, 1.0, 0, 0);
+	glRotatef((rotDir*rotatey) / rotVal, 0, 1.0, 0);
+
+
+
+	if (textureEnable)
+	{
+		glEnable(GL_TEXTURE_2D);
+
+		glBindTexture(GL_TEXTURE_2D, metalTexture);
+	}
+	glBegin(GL_QUADS);
+	for (GLfloat t = 0.0; t < (lenghtParam * PI); t = t + SPRING_STEP)
+	{
+		for (GLfloat u = 0.0; u < (diameterParam * PI); u = u + SPRING_STEP)
+		{
+			if (textureEnable)
+			{
+				glTexCoord3f(xAxisSpringEquation(t, u), yAxisSpringEquation(t, u), zAxisSpringEquation(t, u, scaleParam));
+			}
+			glVertex3f(xAxisSpringEquation(t, u), yAxisSpringEquation(t, u), zAxisSpringEquation(t, u, scaleParam));
+
+			if (textureEnable)
+			{
+				glTexCoord3f(xAxisSpringEquation(t + SPRING_STEP, u + SPRING_STEP), yAxisSpringEquation(t + SPRING_STEP, u + SPRING_STEP), zAxisSpringEquation(t + SPRING_STEP, u + SPRING_STEP, scaleParam));
+			}
+			glVertex3f(xAxisSpringEquation(t + SPRING_STEP, u + SPRING_STEP), yAxisSpringEquation(t + SPRING_STEP, u + SPRING_STEP), zAxisSpringEquation(t + SPRING_STEP, u + SPRING_STEP, scaleParam));
+
+			if (textureEnable)
+			{
+				glTexCoord3f(xAxisSpringEquation(t + SPRING_JUMP, u + SPRING_JUMP), yAxisSpringEquation(t + SPRING_JUMP, u + SPRING_JUMP), zAxisSpringEquation(t + SPRING_JUMP, u + SPRING_JUMP, scaleParam));
+			}
+			glVertex3f(xAxisSpringEquation(t + SPRING_JUMP, u + SPRING_JUMP), yAxisSpringEquation(t + SPRING_JUMP, u + SPRING_JUMP), zAxisSpringEquation(t + SPRING_JUMP, u + SPRING_JUMP, scaleParam));
+
+			if (textureEnable)
+			{
+				glTexCoord3f(xAxisSpringEquation(t + SPRING_STEP + SPRING_JUMP, u + SPRING_STEP), yAxisSpringEquation(t + SPRING_STEP + SPRING_JUMP, u + SPRING_STEP), zAxisSpringEquation(t + SPRING_STEP + SPRING_JUMP, u + SPRING_STEP, scaleParam));
+			}
+			glVertex3f(xAxisSpringEquation(t + SPRING_STEP + SPRING_JUMP, u + SPRING_STEP), yAxisSpringEquation(t + SPRING_STEP + SPRING_JUMP, u + SPRING_STEP), zAxisSpringEquation(t + SPRING_STEP + SPRING_JUMP, u + SPRING_STEP, scaleParam));
+
+		}
+	}
+//	DrawSphere(quad, 2, 20, 20, sphereTexture);
+	glEnd();
 	glPopMatrix();
 }
 
@@ -368,6 +512,15 @@ void firstExcercise(GLfloat posX, GLfloat posY, GLfloat posZ,
 	}
 }
 
+void secondExcercise()
+{
+	DrawCeling(0, 0, 0, 0.3, 0.3, 0.3, -1, 3, metalTexture, false);
+
+	DrawSpring(0.0, 0.0, 0.0, 0.3, 0.3, 0.3, -1, 3, metalTexture, true, 8, 2, springScale);
+
+	DrawSphere(quad, 2, 20, 20, springTopY, springTopZ, springTopX, 0, 0, 0, 1, 1, sphereTexture);
+}
+
 
 GLuint LoadTexture(const char * filename, int width, int height)
 {
@@ -424,23 +577,7 @@ GLuint LoadTexture(const char * filename, int width, int height)
 	return texture;// return the texture data
 }
 
-void DrawSphere(GLUquadric *quad,
-	            GLdouble radius, GLint slices, GLint stacks,
-				GLuint textureId)
-{
 
-	glEnable(GL_TEXTURE_2D);
-
-	glBindTexture(GL_TEXTURE_2D, textureId);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-	gluQuadricTexture(quad, 1);
-
-	gluSphere(quad, 2, 20, 20);
-}
 
 // funkcja generuj¹ca scenê 3D
 void Display()
@@ -465,13 +602,15 @@ void Display()
 
 	//firstExcercise(0,0,0,1,1,0,0,1);
 
-	//DrawSpring(0.0, 0.0, 0.0, 0.3, 0.3, 0.3, -1, 3,metalTexture,true,8,2,springScale);
+	/*DrawCeling(0, 0, 0, 0.3, 0.3, 0.3, -1, 3, metalTexture, false);
 
-	//glRotatef(rotatex, 1.0, 0, 0);
-	//glRotatef(rotatey, 0, 1.0, 0);
-	//glutSolidSphere(5, 50, 50);
+	DrawSpring(0.0, 0.0, 0.0, 0.3, 0.3, 0.3, -1, 3, metalTexture, true, 8, 2, springScale);
 
-	DrawSphere(quad, 2, 20, 20, sphereTexture);
+	DrawSphere(quad, 2, 20, 20, springTopY, springTopZ, springTopX, 0, 0, 0, 1, 1, sphereTexture);*/
+
+	secondExcercise();
+
+	
 
 	// skierowanie poleceñ do wykonania
 	glFlush();
