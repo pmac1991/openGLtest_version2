@@ -90,6 +90,8 @@ GLfloat zAxisSpringEquation(GLfloat t, GLfloat u, GLfloat zParam)
 	return(zParam * t + sin(u));
 }
 
+
+
 void DrawCeling(GLfloat x, GLfloat y, GLfloat z, //positions: x,y,x
 				GLfloat R, GLfloat G, GLfloat B, //colour: R,G,B
 				GLfloat rotDir, GLfloat rotVal,  //rotate direction (-1,1), rotate value
@@ -98,7 +100,7 @@ void DrawCeling(GLfloat x, GLfloat y, GLfloat z, //positions: x,y,x
 {
 	glPushMatrix();
 	glColor3f(R, G, B);
-		glTranslatef(x, y, z);
+		glTranslatef(x, y, z - 0.33);
 		glRotatef((rotDir*rotatex) / rotVal, 1.0, 0, 0);
 		glRotatef((rotDir*rotatey) / rotVal, 0, 1.0, 0);
 
@@ -114,27 +116,27 @@ void DrawCeling(GLfloat x, GLfloat y, GLfloat z, //positions: x,y,x
 
 			if (textureEnable)
 			{
-				glTexCoord3f(x-1,y-1,z);
+				glTexCoord3f(x-1,y-1,0);
 			}
-			glVertex3f(x-1,y-1,z);
+			glVertex3f(x-1,y-1,0);
 
 			if (textureEnable)
 			{
-				glTexCoord3f(x - 1, y + 1, z);
+				glTexCoord3f(x - 1, y + 1, 0);
 			}
-			glVertex3f(x - 1, y + 1, z);
+			glVertex3f(x - 1, y + 1, 0);
 
 			if (textureEnable)
 			{
-				glTexCoord3f(x + 1, y - 1, z);
+				glTexCoord3f(x + 1, y - 1, 0);
 			}
-			glVertex3f(x + 1, y - 1, z);
+			glVertex3f(x + 1, y - 1, 0);
 
 			if (textureEnable)
 			{
-				glTexCoord3f(x + 1, y + 1, z);
+				glTexCoord3f(x + 1, y + 1, 0);
 			}
-			glVertex3f(x + 1, y + 1, z);
+			glVertex3f(x + 1, y + 1, 0);
 
 		glEnd();
 	glPopMatrix();
@@ -147,6 +149,7 @@ void DrawSphere(GLUquadric *quad,
 				GLfloat rotDir, GLfloat rotVal,  //rotate direction (-1,1), rotate value
 				GLuint textureId)
 {
+	glPushMatrix();
 	glTranslatef(x, y, z);
 	glRotatef((rotDir*rotatex) / rotVal, 1.0, 0, 0);
 	glRotatef((rotDir*rotatey) / rotVal, 0, 1.0, 0);
@@ -162,6 +165,33 @@ void DrawSphere(GLUquadric *quad,
 	gluQuadricTexture(quad, 1);
 
 	gluSphere(quad, 2, 20, 20);
+	glPopMatrix();
+}
+
+void DrawCylinder(GLUquadric *quad,
+				GLint height, GLint slices, GLint stacks, GLint base, GLint top,
+				GLfloat x, GLfloat y, GLfloat z, //positions: x,y,x
+				GLfloat R, GLfloat G, GLfloat B, //colour: R,G,B
+				GLfloat rotDir, GLfloat rotVal,  //rotate direction (-1,1), rotate value
+				GLuint textureId)
+{
+	glPushMatrix();
+	glTranslatef(x, y, z);
+	glRotatef((rotDir*rotatex) / rotVal, 1.0, 0, 0);
+	glRotatef((rotDir*rotatey) / rotVal, 0, 1.0, 0);
+
+	glEnable(GL_TEXTURE_2D);
+
+	glBindTexture(GL_TEXTURE_2D, textureId);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+	gluQuadricTexture(quad, 1);
+
+	gluCylinder(quad, base, top, height, slices, stacks);
+	glPopMatrix();
 }
 
 void DrawSpring(GLfloat x, GLfloat y, GLfloat z, //positions: x,y,x
@@ -516,10 +546,15 @@ void secondExcercise()
 {
 	DrawCeling(0, 0, 0, 0.3, 0.3, 0.3, -1, 3, metalTexture, false);
 
-	DrawSpring(0.0, 0.0, 0.0, 0.3, 0.3, 0.3, -1, 3, metalTexture, true, 8, 2, springScale);
+	DrawSpring(0.0, 2, 0.0, 0.3, 0.3, 0.3, -1, 3, metalTexture, true, 8, 2, springScale);
 
-	DrawSphere(quad, 2, 20, 20, springTopY, springTopZ, springTopX, 0, 0, 0, 1, 1, sphereTexture);
-}
+	DrawCylinder(quad, 4, 20, 20, 2, 2, 2, 0, 0, 0, 0, 0, -1, 3, metalTexture);
+
+	DrawSphere(quad, 2, 20, 20, springTopY + 2, springTopZ , -springTopX , 0, 0, 0, -1, 3, metalTexture);//sphereTexture);
+
+	DrawCylinder(quad, 4, 20, 20, 2, 2, springTopY + 2, springTopZ + 2 , -springTopX , 0, 0, 0, -1, 3, metalTexture);
+
+ }
 
 
 GLuint LoadTexture(const char * filename, int width, int height)
@@ -681,7 +716,7 @@ static void timerCallback(int value)
 	Display();
 
 	/* call back again after elapsedUSecs have passed */
-	glutTimerFunc(10, timerCallback, value);
+	glutTimerFunc(100, timerCallback, value);
 }
 
 void Keyboard(unsigned char key, int x, int y)
@@ -691,22 +726,22 @@ void Keyboard(unsigned char key, int x, int y)
 	{
 		case '+':
 		{
-			eyez -= 0.1;
+			eyez -= 0.4;
 			break;
 		}
 		case '-':
 		{
-			eyez += 0.1;
+			eyez += 0.4;
 			break;
 		}
 		case 'w':
 		{
-			springScale += 0.1;
+			springScale += 0.2;
 			break;
 		}
 		case 's':
 		{
-			springScale -= 0.1;
+			springScale -= 0.2;
 			break;
 		}
 	}
@@ -723,17 +758,17 @@ void SpecialKeys(int key, int x, int y)
 	{
 		// kursor w lewo
 	case GLUT_KEY_LEFT:
-		eyex += 0.1;
+		eyex += 0.4;
 		break;
 
 		// kursor w górê
 	case GLUT_KEY_UP:
-		eyey -= 0.1;
+		eyey -= 0.4;
 		break;
 
 		// kursor w prawo
 	case GLUT_KEY_RIGHT:
-		eyex -= 0.1;
+		eyex -= 0.4;
 		break;
 
 		// kursor w dó³
@@ -743,26 +778,26 @@ void SpecialKeys(int key, int x, int y)
 		
 		// kursor w lewo
 	case GLUT_KEY_F1:
-		rotatey -= 1;
-		spread += 0.001;
+		rotatey -= 2;
+		spread += 0.01;
 		break;
 
 		// kursor w górê
 	case GLUT_KEY_F3:
-		rotatex -= 1;
-		spread += 0.001;
+		rotatex -= 2;
+		spread += 0.01;
 		break;
 
 		// kursor w prawo
 	case GLUT_KEY_F2:
-		rotatey += 1;
-		spread += 0.001;
+		rotatey += 2;
+		spread += 0.01;
 		break;
 
 		// kursor w dó³
 	case GLUT_KEY_F4:
-		rotatex += 1;
-		spread += 0.001;
+		rotatex += 2;
+		spread += 0.01;
 		break;
 	}
 
